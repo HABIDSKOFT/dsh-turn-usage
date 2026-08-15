@@ -35,13 +35,16 @@
    ```
 3. 重启 `dsh web`，浏览器硬刷新（`Ctrl+Shift+R`）。
 
-### 方式二：`dsh plugin`（需要 pnpm）
+### 方式二：`dsh plugin` 从本地路径安装（需要 pnpm）
 
 ```sh
-dsh plugin --profile web add dsh-turn-usage
+# <repo> 换成你克隆/下载的本仓库路径
+dsh plugin --profile web add <repo>/dsh-turn-usage
 ```
 
 然后同样在 `cordis.patch.yml` 加上面的启用条目并重启。
+
+> 注意：本插件尚未发布到 npm，所以 `dsh plugin --profile web add dsh-turn-usage`（不带路径）会找不到包。想一行命令安装，可以先 `npm publish` 发布到 npm，之后直接 `dsh plugin --profile web add dsh-turn-usage` 即可。
 
 ### 卸载
 
