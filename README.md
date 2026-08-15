@@ -103,7 +103,7 @@ JSON 支持两种结构：
 - 平铺：`{ "deepseek-v4-flash": { input, cacheRead, cacheWrite, output } }`
 - 峰谷自动切换：`{ "deepseek-v4-flash": { input, cacheRead, cacheWrite, output, switchAt: "2026-08-17T00:00:00+08:00", peak: {...}, offPeak: {...} } }`（`switchAt` 之前用平铺价，之后按北京时间自动选 peak/offPeak）
 
-运行时可覆盖（无需改文件，JSON 合并进默认表）：
+运行时可覆盖（无需改文件，JSON 合并进默认表，保存后自动持久化到宿主配置文件）：
 
 ```js
 localStorage["dsh.turnUsage.prices"] = JSON.stringify({
@@ -111,11 +111,21 @@ localStorage["dsh.turnUsage.prices"] = JSON.stringify({
 });
 ```
 
+## 配置持久化（跨重启）
+
+桌面端每次启动都随机换端口（`dsh web --port 0`），浏览器 localStorage 按 origin 隔离，端口一变就全部丢失——价格配置因此会"重启后回溯默认"。插件用宿主 JSON 文件解决：
+
+- 配置文件：`<DSH_HOME>/storages/dsh-turn-usage.json`（`DSH_HOME` 默认 `~/.dsh`，即 `%USERPROFILE%\.dsh`）
+- 启动时 host 半部读取该文件，作为「dsh-turn-usage」settings 命名空间的 `base` 层注入，并通过 `GET /api/dsh-turn-usage/config`（loopback-only）供浏览器半部加载
+- 每次保存配置，浏览器半部 `POST` 到同一路由（带每进程随机 token 防跨站写入），host 原子写盘（tmp + rename），并同步写入宿主 settings 文档（`~/.dsh/settings.yaml`）作第二份副本
+- 旧版本（无该路由的 host）下插件自动降级为纯 localStorage，不报错
+
 设置窗口高度默认较大（360px），手动拖动后自动记住高度（`localStorage["dsh.turnUsage.editorHeight"]`）。
 
 ## 工作原理
 
-- 纯客户端插件：无 host 端逻辑，`lib/index.js` 为空 apply，浏览器半部经 `exports["./client"]` + `dsh.client.platform: "web"` 被发现并注入 boot graph
+- host 半部（`lib/index.js`）：读取/写入上述 JSON 文件，注册 settings 命名空间，注册 `GET/POST /api/dsh-turn-usage/config` 精确路由（仅回环地址，POST 带 token 校验）
+- 浏览器半部经 `exports["./client"]` + `dsh.client.platform: "web"` 被发现并注入 boot graph
 - 注入点：
   - `conversation.chat.turnTail`（每轮尾部，priority -1 赢得选举并组合渲染产物卡片）
   - `conversation.composer.dock` id `stats`（priority -1 替换自带 StatsLine，token 组内追加最新任务费用）
