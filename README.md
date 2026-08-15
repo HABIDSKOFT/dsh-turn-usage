@@ -53,7 +53,7 @@ dsh plugin --profile web add dsh-turn-usage
 
 ## 价格配置
 
-**推荐：界面化** —— 设置 → 通用 → 「Token 价格表（dsh-turn-usage）」：直接编辑 JSON 保存即生效，费用行实时重算；「当前模型」输入框用于定价匹配，客户端拿不到每步模型名，切换模型后请填写，如 `deepseek-v4-pro`，否则按 `*` 兜底价估算。
+**推荐：界面化** —— 设置 → 通用 → 「Token 价格表（dsh-turn-usage）」：直接编辑 JSON 保存即生效，费用行实时重算；「当前模型」输入框用于定价匹配，客户端拿不到每步模型名，切换模型后请填写，如 `deepseek-v4-pro`，否则按 `*` 兜底价估算。  
 **「当前模型」输入框用于定价匹配，客户端拿不到每步模型名，切换模型后请填写！！！！！！**
 
 默认价格（人民币 / 每百万 token，来源 [DeepSeek 官方定价](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/)）：
