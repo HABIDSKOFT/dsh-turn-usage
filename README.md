@@ -48,8 +48,13 @@
 ### 方式二：`dsh plugin` 从本地路径安装（需要 pnpm）
 
 ```sh
-# 克隆后在本仓库目录内执行
-dsh plugin --profile web add ./dsh-turn-usage
+# 写法 A：克隆后进入克隆出的文件夹，用 . 表示"当前目录本身"
+git clone https://github.com/HABIDSKOFT/dsh-turn-usage.git
+cd dsh-turn-usage
+dsh plugin --profile web add .
+
+# 写法 B：或在任意目录用克隆文件夹的完整路径
+dsh plugin --profile web add C:\你的路径\dsh-turn-usage
 ```
 
 然后同样在 `cordis.patch.yml` 加上面的启用条目并重启。
