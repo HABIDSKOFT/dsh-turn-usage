@@ -73,8 +73,7 @@ dsh plugin --profile web add C:\你的路径\dsh-turn-usage
 
 - **「添加模型」按钮**：弹窗输入模型名 + 缓存命中/缓存未命中/缓存写入/输出四个价格（¥/Mtokens），保存后写入价格表
 - **「修改模型」按钮**：下拉选择已有模型，修改四个价格后保存更新（保留峰谷结构，仅更新平铺价）
-- **「当前模型」下拉框**：从价格表已有模型中选择用于定价匹配（选择即保存），留空按 `*` 兜底价估算
-- 也可直接编辑 JSON 保存即生效，费用行实时重算。
+- 也可直接编辑 JSON 保存即生效，费用行实时重算。价格按每轮真实模型名自动匹配（无需手动指定），未配置的模型按 `*` 兜底价。
 
 > 缓存写入（cacheWrite）：新 prompt 内容首次处理时写入缓存所计的费用。DeepSeek 不单独计费（未命中价已含，adapter 也不上报该桶）；Anthropic 等厂商按此参数单独计价。
 
@@ -111,6 +110,8 @@ localStorage["dsh.turnUsage.prices"] = JSON.stringify({
 });
 ```
 
+> **对于自定义模型的提供方，特别是 API 平台，受到不公开的 token 测算影响，计算的费用会有所浮动；对于原生 DeepSeek 不受影响。**
+
 ## 配置持久化（跨重启）
 
 桌面端每次启动都随机换端口（`dsh web --port 0`），浏览器 localStorage 按 origin 隔离，端口一变就全部丢失——价格配置因此会"重启后回溯默认"。插件用宿主 JSON 文件解决：
@@ -130,7 +131,7 @@ localStorage["dsh.turnUsage.prices"] = JSON.stringify({
   - `conversation.chat.turnTail`（每轮尾部，priority -1 赢得选举并组合渲染产物卡片）
   - `conversation.composer.dock` id `stats`（priority -1 替换自带 StatsLine，token 组内追加最新任务费用）
   - `settings.general.item`（价格配置行）
-- 价格读取优先级：用户设置「当前模型」→ 节点模型（harness 未投影，通常无）→ `*` 兜底
+- 价格读取优先级：每轮真实模型名精确匹配 → `deepseek-*` 家族前缀 → `*` 兜底（无需手动指定模型）
 
 ## 兼容性
 
