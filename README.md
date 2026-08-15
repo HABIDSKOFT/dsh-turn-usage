@@ -1,6 +1,8 @@
 # dsh-turn-usage
 
 > DeepSeek Harness 的 token 用量与费用显示插件 · a [dsh-plugin](https://github.com/topics/dsh-plugin) for the DeepSeek Harness web UI
+>
+> 📦 仓库：<https://github.com/HABIDSKOFT/dsh-turn-usage>
 
 为 **DeepSeek Harness Web UI** 增加逐轮 token 消耗与估算价格显示：输入（缓存未命中/命中）、输出、以及单次任务的实时费用。
 
@@ -23,23 +25,28 @@
 
 ### 方式一：手动安装（推荐，无需 pnpm）
 
-1. 把 `dsh-turn-usage` 文件夹复制到你的 web profile 依赖目录：
+1. 获取插件文件夹 —— 克隆本仓库：
+   ```sh
+   git clone https://github.com/HABIDSKOFT/dsh-turn-usage.git
+   ```
+   或从仓库主页 Code → Download ZIP 解压，得到 `dsh-turn-usage/` 文件夹。
+2. 把 `dsh-turn-usage` 文件夹复制到你的 web profile 依赖目录：
    ```powershell
    Copy-Item -Recurse dsh-turn-usage "$env:USERPROFILE\.dsh\profiles\node_modules\"
    ```
-2. 在 profile 的 `cordis.patch.yml`（`%USERPROFILE%\.dsh\profiles\web\cordis.patch.yml`）追加启用条目：
+3. 在 profile 的 `cordis.patch.yml`（`%USERPROFILE%\.dsh\profiles\web\cordis.patch.yml`）追加启用条目：
    ```yaml
    - insert:
        - id: turn-usage
          name: dsh-turn-usage
    ```
-3. 重启 `dsh web`，浏览器硬刷新（`Ctrl+Shift+R`）。
+4. 重启 `dsh web`，浏览器硬刷新（`Ctrl+Shift+R`）。
 
 ### 方式二：`dsh plugin` 从本地路径安装（需要 pnpm）
 
 ```sh
-# <repo> 换成你克隆/下载的本仓库路径
-dsh plugin --profile web add <repo>/dsh-turn-usage
+# 克隆后在本仓库目录内执行
+dsh plugin --profile web add ./dsh-turn-usage
 ```
 
 然后同样在 `cordis.patch.yml` 加上面的启用条目并重启。
@@ -107,4 +114,4 @@ localStorage["dsh.turnUsage.prices"] = JSON.stringify({
 
 ## License
 
-MIT © [Habidskoft](https://github.com/Habidskoft)
+MIT © [HABIDSKOFT](https://github.com/HABIDSKOFT)

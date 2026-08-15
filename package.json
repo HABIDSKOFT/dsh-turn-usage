@@ -33,12 +33,12 @@
     "deepseek"
   ],
   "license": "MIT",
-  "author": "Habidskoft",
+  "author": "HABIDSKOFT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Habidskoft/dsh-turn-usage.git"
+    "url": "https://github.com/HABIDSKOFT/dsh-turn-usage.git"
   },
-  "homepage": "https://github.com/Habidskoft/dsh-turn-usage#readme",
+  "homepage": "https://github.com/HABIDSKOFT/dsh-turn-usage#readme",
   "engines": {
     "node": ">=18"
   }
