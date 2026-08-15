@@ -1,0 +1,45 @@
+{
+  "name": "dsh-turn-usage",
+  "version": "0.1.0",
+  "description": "Per-turn token usage and cost display for the DeepSeek Harness web UI: input (cache miss/hit), output, and estimated price per conversation. dsh-plugin.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-deliverables"
+      ]
+    }
+  },
+  "files": [
+    "lib",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "dsh",
+    "token-usage",
+    "cost",
+    "tokens",
+    "pricing",
+    "deepseek"
+  ],
+  "license": "MIT",
+  "author": "Habidskoft",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Habidskoft/dsh-turn-usage.git"
+  },
+  "homepage": "https://github.com/Habidskoft/dsh-turn-usage#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}
