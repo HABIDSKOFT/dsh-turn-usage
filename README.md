@@ -9,17 +9,20 @@
 ## 功能
 
 - **每轮完成后的尾部行**（`conversation.chat.turnTail`）：
-  `输入 2.1K未命中 · 3.4K命中 · 输出 5.2K · 费用 ≈¥0.0035`
-  与自带的「产物」卡片共存（本插件以更低优先级赢得链槽选举，并同时渲染产物组件，互不顶替）。
-- **底部 StatsLine 增强**：以同 id（`stats`）、更低优先级替换自带统计行，完整保留原有内容（轮数 / 耗时 / 速率 / 缓存命中 / 输入输出），并在 **token 计数组内追加「最新任务累计费用 ≈¥X」** —— 只统计最近一次任务的实时价格（运行中的任务按已计 usage 实时更新）。
+  显示如`输入 2.1K未命中 · 3.4K命中 · 输出 5.2K · 费用 ≈¥0.0035`的信息。
+- **底部 StatsLine 增强**：以同 id（`stats`）完整保留原有内容（轮数 / 耗时 / 速率 / 缓存命中 / 输入输出），并在 **token 计数组内追加「最新任务累计费用 ≈¥X」** 。
 - **中断（停止）的步骤**：若停止前收到了 usage chunk，其消耗会计入该轮行与最新任务费用（折叠读取视图节点 `data.usage`，与 harness 服务端投影同源）；若停止过早连 usage chunk 都没收到，则该步无数据可计（harness 自身投影同样不计）。
-- **价格可配置**：内置 DeepSeek 官方最新价 + 8/17 起峰谷自动切换；GUI 界面编辑 JSON，无需改代码。
+- **价格可配置**：内置 8/17 起峰谷后自动切换DeepSeek价格表；设置界面GUI编辑 JSON，可根据需求修改模型对应价格。
 
-数据来自每个 assistant 节点自带的 provider usage（`inputTokens`=未命中、`cacheReadTokens`=命中、`cacheWriteTokens`=写缓存、`outputTokens`=输出），与 harness 自己的权威投影同源，非估算。
+数据来自每个 assistant 节点自带的 provider usage（`inputTokens`=未命中、`cacheReadTokens`=命中、`cacheWriteTokens`=写缓存、`outputTokens`=输出）。
 
 ## 截图
 
-> TODO：替换为你的实际截图（对话尾部行 + 底部 StatsLine 合并行 + 设置面板价格编辑框）。
+**输入框底部单次任务消耗显示**  
+<img width="1218" height="53" alt="image" src="https://github.com/user-attachments/assets/6ec897db-cf62-46aa-b2a4-e3b929a92d40" />
+
+**对话末尾消耗显示**  
+<img width="519" height="60" alt="image" src="https://github.com/user-attachments/assets/fd4ecc4e-0986-4456-bdb5-56e26f0091f9" />
 
 ## 安装
 
@@ -61,7 +64,9 @@ dsh plugin --profile web add ./dsh-turn-usage
 
 ## 价格配置
 
-**推荐：界面化** —— 设置 → 通用 → 「Token 价格表（dsh-turn-usage）」：直接编辑 JSON 保存即生效，费用行实时重算；「当前模型」输入框用于定价匹配（客户端拿不到每步模型名，切换模型后请填写，如 `deepseek-v4-pro`，否则按 `*` 兜底价估算）。
+**推荐：界面化** —— 设置 → 通用 → 「Token 价格表（dsh-turn-usage）」：直接编辑 JSON 保存即生效，费用行实时重算。
+
+**「当前模型」输入框用于定价匹配：客户端拿不到每步模型名，切换模型后请填写（如 `deepseek-v4-pro`），否则按 `*` 兜底价估算！**
 
 默认价格（人民币 / 每百万 token，来源 [DeepSeek 官方定价](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/)）：
 
